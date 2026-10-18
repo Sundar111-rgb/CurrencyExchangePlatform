@@ -15,7 +15,10 @@ import {
 
 import { useState } from 'react';
 import './App.css';
-import api from './services/api';
+import api from './api/api';
+import { useEffect } from 'react';
+import LoginScreen from './components/LoginScreen.jsx';
+import { logoutAdmin } from './api/authApi';
 
 const stats = [
   {
@@ -112,11 +115,25 @@ const navigation = [
 
 function App() {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    Boolean(localStorage.getItem('adminToken'))
+  );
 
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+
+
+  const handleLogout = () => {
+    logoutAdmin();
+    setIsAuthenticated(false);
+  };
   // Exchange Rates search and filter state
   const [searchCurrency, setSearchCurrency] = useState('');
   const [rateStatus, setRateStatus] = useState('All');
-   
+
   const pageContent = {
     Dashboard: {
       title: 'Dashboard',
@@ -157,13 +174,17 @@ function App() {
   });
 
   const testApi = async () => {
-  try {
-    const response = await api.get('/health');
-    console.log('API Response:', response.data);
-  } catch (error) {
-    console.error('API Error:', error.message);
+    try {
+      const response = await api.get('/health');
+      console.log('API Response:', response.data);
+    } catch (error) {
+      console.error('API Error:', error.message);
+    }
+  };
+
+  if (!isAuthenticated) {
+    return <LoginScreen onLogin={handleLogin} />;
   }
-};
 
   return (
     <div className="admin-layout">
@@ -189,9 +210,8 @@ function App() {
             return (
               <button
                 key={item.label}
-                className={`nav-item ${
-                  activeMenu === item.label ? 'active' : ''
-                }`}
+                className={`nav-item ${activeMenu === item.label ? 'active' : ''
+                  }`}
                 onClick={() => setActiveMenu(item.label)}
               >
                 <Icon size={19} />
@@ -247,6 +267,14 @@ function App() {
                 <strong>Administrator</strong>
                 <span>Super Admin</span>
               </div>
+
+              <button
+                type="button"
+                className="logout-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
             </div>
           </div>
         </header>
@@ -350,11 +378,10 @@ function App() {
 
                           <td>
                             <span
-                              className={`status-badge ${
-                                conversion.status === 'Completed'
+                              className={`status-badge ${conversion.status === 'Completed'
                                   ? 'completed'
                                   : 'pending'
-                              }`}
+                                }`}
                             >
                               {conversion.status}
                             </span>
@@ -460,11 +487,10 @@ function App() {
                           <td>{item.rate.toFixed(2)}</td>
                           <td>
                             <span
-                              className={`status-badge ${
-                                item.status === 'Active'
+                              className={`status-badge ${item.status === 'Active'
                                   ? 'completed'
                                   : 'pending'
-                              }`}
+                                }`}
                             >
                               {item.status}
                             </span>
@@ -531,11 +557,10 @@ function App() {
 
                         <td>
                           <span
-                            className={`status-badge ${
-                              conversion.status === 'Completed'
+                            className={`status-badge ${conversion.status === 'Completed'
                                 ? 'completed'
                                 : 'pending'
-                            }`}
+                              }`}
                           >
                             {conversion.status}
                           </span>

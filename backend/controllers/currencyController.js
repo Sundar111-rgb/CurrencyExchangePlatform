@@ -4,7 +4,7 @@ import { getExchangeRates } from '../services/exchangeRateService.js';
 export const getSupportedCurrencies = async (req, res) => {
   try {
     const data = await getExchangeRates('USD');
-
+    
     const currencies = Object.keys(data.rates)
       .sort()
       .map((code) => ({

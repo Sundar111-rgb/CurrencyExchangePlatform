@@ -406,6 +406,22 @@ tbody tr:last-child td {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
+.logout-button {
+  margin-left: 16px;
+  padding: 9px 14px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logout-button:hover {
+  background-color: #fecaca;
+}
 
 @media (max-width: 1100px) {
   .stats-grid {
