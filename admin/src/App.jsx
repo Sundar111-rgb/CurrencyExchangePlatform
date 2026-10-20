@@ -18,7 +18,10 @@ import './App.css';
 import LoginScreen from './components/LoginScreen.jsx';
 import { logoutAdmin } from './api/authApi';
 import Dashboard from './components/Dashboard.jsx';
-
+import UserScreen from './components/UserScreen.jsx';
+import ExchangeRates from './components/ExchangeRates.jsx';
+import ConversionHistory from './components/ConversionHistory.jsx';
+import SettingPage from './components/SettingPage.jsx';
 const stats = [
   {
     title: 'Total Users',
@@ -253,22 +256,22 @@ function App() {
             </button>
 
 
-<div className="admin-profile">
-  <div className="avatar">A</div>
+            <div className="admin-profile">
+              <div className="avatar">A</div>
 
-  <div className="profile-details">
-    <strong>Administrator</strong>
-    <span>Admin</span>
-  </div>
+              <div className="profile-details">
+                <strong>Administrator</strong>
+                <span>Admin</span>
+              </div>
 
-  <button
-    type="button"
-    className="logout-button"
-    onClick={handleLogout}
-  >
-    Logout
-  </button>
-</div>
+              <button
+                type="button"
+                className="logout-button"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
 
           </div>
         </header>
@@ -278,203 +281,18 @@ function App() {
           {activeMenu === 'Dashboard' && <Dashboard />}
 
           {/* Users */}
-          {activeMenu === 'Users' && (
-            <section className="table-card">
-              <div className="table-heading">
-                <div>
-                  <h2>User Management</h2>
-                  <p>Manage registered platform users.</p>
-                </div>
-              </div>
-
-              <div className="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Role</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td colSpan={5}>
-                        Conversion history API integration is pending.
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+          {/* Users */}
+          {activeMenu === 'Users' && <UserScreen />}
 
           {/* Exchange Rates */}
-          {activeMenu === 'Exchange Rates' && (
-            <section className="table-card">
-              <div className="table-heading">
-                <div>
-                  <h2>Exchange Rates</h2>
-                  <p>
-                    View and manage currency exchange rates.
-                  </p>
-                </div>
-              </div>
-
-              {/* Search and Status Filter */}
-              <div className="rate-filters">
-                <input
-                  type="text"
-                  placeholder="Search currency (USD, INR...)"
-                  value={searchCurrency}
-                  onChange={(event) =>
-                    setSearchCurrency(event.target.value)
-                  }
-                  aria-label="Search currencies"
-                />
-
-                <select
-                  value={rateStatus}
-                  onChange={(event) =>
-                    setRateStatus(event.target.value)
-                  }
-                  aria-label="Filter exchange rates by status"
-                >
-                  <option value="All">All Statuses</option>
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-
-              <div className="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Base Currency</th>
-                      <th>Target Currency</th>
-                      <th>Exchange Rate</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {filteredRates.length > 0 ? (
-                      filteredRates.map((item) => (
-                        <tr
-                          key={`${item.base}-${item.target}`}
-                        >
-                          <td>{item.base}</td>
-                          <td>{item.target}</td>
-                          <td>{item.rate.toFixed(2)}</td>
-                          <td>
-                            <span
-                              className={`status-badge ${item.status === 'Active'
-                                ? 'completed'
-                                : 'pending'
-                                }`}
-                            >
-                              {item.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={4}>
-                          No exchange rates found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+          {/* Exchange Rates */}
+          {activeMenu === 'Exchange Rates' && <ExchangeRates />}
 
           {/* Conversion History */}
-          {activeMenu === 'Conversion History' && (
-            <section className="table-card">
-              <div className="table-heading">
-                <div>
-                  <h2>Conversion History</h2>
-                  <p>
-                    Review currency conversion activity.
-                  </p>
-                </div>
-              </div>
-
-              <div className="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Transaction ID</th>
-                      <th>User</th>
-                      <th>Currency Pair</th>
-                      <th>Amount</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    {recentConversions.map((conversion) => (
-                      <tr key={conversion.id}>
-                        <td className="transaction-id">
-                          {conversion.id}
-                        </td>
-
-                        <td>{conversion.user}</td>
-
-                        <td>
-                          <span className="currency-pair">
-                            {conversion.from}{' '}
-                            <span>→</span>{' '}
-                            {conversion.to}
-                          </span>
-                        </td>
-
-                        <td>
-                          {conversion.amount} {conversion.from}
-                        </td>
-
-                        <td>
-                          <span
-                            className={`status-badge ${conversion.status === 'Completed'
-                              ? 'completed'
-                              : 'pending'
-                              }`}
-                          >
-                            {conversion.status}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          )}
+          {activeMenu === 'Conversion History' && <ConversionHistory />}
 
           {/* Settings */}
-          {activeMenu === 'Settings' && (
-            <section className="table-card">
-              <div className="table-heading">
-                <div>
-                  <h2>Settings</h2>
-                  <p>
-                    Manage your admin dashboard settings.
-                  </p>
-                </div>
-              </div>
-
-              <div className="table-wrapper">
-                <p>
-                  Settings configuration will be implemented
-                  in a later step.
-                </p>
-              </div>
-            </section>
-          )}
+          {activeMenu === 'Settings' && <SettingPage />}
         </section>
       </main>
     </div>
