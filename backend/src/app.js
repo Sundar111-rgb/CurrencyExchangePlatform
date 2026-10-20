@@ -11,6 +11,7 @@ import exchangeRoutes from '../routes/exchangeRoutes.js';
 import currencyRoutes from '../routes/currencyRoutes.js';
 import conversionRoutes from '../routes/conversionRoutes.js';
 import historyRoutes from '../routes/historyRoutes.js';
+import adminRoutes from '../routes/adminRoutes.js';
 
 const app = express();
 
@@ -45,7 +46,7 @@ app.use('/api/exchange', exchangeRoutes);
 app.use('/api/currencies', currencyRoutes);
 app.use('/api/conversions', conversionRoutes);
 app.use('/api/history', historyRoutes);
-
+app.use('/api/admin', adminRoutes);
 // Keep this last
 app.use((req, res) => {
   res.status(404).json({

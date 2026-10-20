@@ -15,10 +15,9 @@ import {
 
 import { useState } from 'react';
 import './App.css';
-import api from './api/api';
-import { useEffect } from 'react';
 import LoginScreen from './components/LoginScreen.jsx';
 import { logoutAdmin } from './api/authApi';
+import Dashboard from './components/Dashboard.jsx';
 
 const stats = [
   {
@@ -173,14 +172,7 @@ function App() {
     return matchesSearch && matchesStatus;
   });
 
-  const testApi = async () => {
-    try {
-      const response = await api.get('/health');
-      console.log('API Response:', response.data);
-    } catch (error) {
-      console.error('API Error:', error.message);
-    }
-  };
+
 
   if (!isAuthenticated) {
     return <LoginScreen onLogin={handleLogin} />;
@@ -260,140 +252,30 @@ function App() {
               <span />
             </button>
 
-            <div className="admin-profile">
-              <div className="avatar">A</div>
 
-              <div className="profile-details">
-                <strong>Administrator</strong>
-                <span>Super Admin</span>
-              </div>
+<div className="admin-profile">
+  <div className="avatar">A</div>
 
-              <button
-                type="button"
-                className="logout-button"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
+  <div className="profile-details">
+    <strong>Administrator</strong>
+    <span>Admin</span>
+  </div>
+
+  <button
+    type="button"
+    className="logout-button"
+    onClick={handleLogout}
+  >
+    Logout
+  </button>
+</div>
+
           </div>
         </header>
 
         <section className="dashboard-body">
           {/* Dashboard */}
-          {activeMenu === 'Dashboard' && (
-            <>
-              <div className="section-heading">
-                <div>
-                  <h2>Overview</h2>
-                  <p>
-                    Monitor your currency exchange platform.
-                  </p>
-                </div>
-
-                <span className="date-label">
-                  <Activity size={16} />
-                  Dashboard overview
-                </span>
-              </div>
-
-              <div className="stats-grid">
-                {stats.map((stat) => {
-                  const Icon = stat.icon;
-
-                  return (
-                    <article
-                      className="stat-card"
-                      key={stat.title}
-                    >
-                      <div className="stat-top">
-                        <div className="stat-icon">
-                          <Icon size={21} />
-                        </div>
-
-                        <span className="stat-change">
-                          {stat.change}
-                        </span>
-                      </div>
-
-                      <p>{stat.title}</p>
-                      <h3>{stat.value}</h3>
-                    </article>
-                  );
-                })}
-              </div>
-
-              <section className="table-card">
-                <div className="table-heading">
-                  <div>
-                    <h2>Recent Conversions</h2>
-                    <p>
-                      Latest currency conversion activity
-                    </p>
-                  </div>
-
-                  <button
-                    className="view-all"
-                    type="button"
-                    onClick={() =>
-                      setActiveMenu('Conversion History')
-                    }
-                  >
-                    View all <span>→</span>
-                  </button>
-                </div>
-
-                <div className="table-wrapper">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Transaction ID</th>
-                        <th>User</th>
-                        <th>Currency Pair</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {recentConversions.map((conversion) => (
-                        <tr key={conversion.id}>
-                          <td className="transaction-id">
-                            {conversion.id}
-                          </td>
-
-                          <td>{conversion.user}</td>
-
-                          <td>
-                            <span className="currency-pair">
-                              {conversion.from}{' '}
-                              <span>→</span>{' '}
-                              {conversion.to}
-                            </span>
-                          </td>
-
-                          <td>
-                            {conversion.amount} {conversion.from}
-                          </td>
-
-                          <td>
-                            <span
-                              className={`status-badge ${conversion.status === 'Completed'
-                                  ? 'completed'
-                                  : 'pending'
-                                }`}
-                            >
-                              {conversion.status}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </section>
-            </>
-          )}
+          {activeMenu === 'Dashboard' && <Dashboard />}
 
           {/* Users */}
           {activeMenu === 'Users' && (
@@ -418,8 +300,8 @@ function App() {
 
                   <tbody>
                     <tr>
-                      <td colSpan={4}>
-                        User data integration is pending.
+                      <td colSpan={5}>
+                        Conversion history API integration is pending.
                       </td>
                     </tr>
                   </tbody>
@@ -488,8 +370,8 @@ function App() {
                           <td>
                             <span
                               className={`status-badge ${item.status === 'Active'
-                                  ? 'completed'
-                                  : 'pending'
+                                ? 'completed'
+                                : 'pending'
                                 }`}
                             >
                               {item.status}
@@ -558,8 +440,8 @@ function App() {
                         <td>
                           <span
                             className={`status-badge ${conversion.status === 'Completed'
-                                ? 'completed'
-                                : 'pending'
+                              ? 'completed'
+                              : 'pending'
                               }`}
                           >
                             {conversion.status}
