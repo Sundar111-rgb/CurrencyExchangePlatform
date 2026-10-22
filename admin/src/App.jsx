@@ -2,110 +2,24 @@
 import {
   LayoutDashboard,
   Users,
-  ArrowLeftRight,
   History,
   Settings,
   Bell,
   Search,
   TrendingUp,
-  Wallet,
-  Activity,
   CircleDollarSign,
 } from 'lucide-react';
 
 import { useState } from 'react';
 import './App.css';
 import LoginScreen from './components/LoginScreen.jsx';
-import { logoutAdmin } from './api/authApi';
 import Dashboard from './components/Dashboard.jsx';
 import UserScreen from './components/UserScreen.jsx';
 import ExchangeRates from './components/ExchangeRates.jsx';
 import ConversionHistory from './components/ConversionHistory.jsx';
 import SettingPage from './components/SettingPage.jsx';
-const stats = [
-  {
-    title: 'Total Users',
-    value: '1,248',
-    change: '+12.5%',
-    icon: Users,
-  },
-  {
-    title: 'Total Conversions',
-    value: '8,542',
-    change: '+8.2%',
-    icon: ArrowLeftRight,
-  },
-  {
-    title: 'Exchange Volume',
-    value: '$245,890',
-    change: '+15.3%',
-    icon: Wallet,
-  },
-  {
-    title: 'Active Currencies',
-    value: '25',
-    change: '+2 new',
-    icon: CircleDollarSign,
-  },
-];
 
-const recentConversions = [
-  {
-    id: 'CNV-1001',
-    user: 'Rahul Sharma',
-    from: 'USD',
-    to: 'INR',
-    amount: '100.00',
-    status: 'Completed',
-  },
-  {
-    id: 'CNV-1002',
-    user: 'Priya Singh',
-    from: 'EUR',
-    to: 'INR',
-    amount: '250.00',
-    status: 'Completed',
-  },
-  {
-    id: 'CNV-1003',
-    user: 'Amit Kumar',
-    from: 'GBP',
-    to: 'USD',
-    amount: '75.00',
-    status: 'Pending',
-  },
-  {
-    id: 'CNV-1004',
-    user: 'Neha Verma',
-    from: 'USD',
-    to: 'EUR',
-    amount: '500.00',
-    status: 'Completed',
-  },
-];
-
-// Sample data for the Exchange Rates page.
-// We will connect this to the backend API later.
-const exchangeRates = [
-  {
-    base: 'USD',
-    target: 'INR',
-    rate: 83.5,
-    status: 'Active',
-  },
-  {
-    base: 'EUR',
-    target: 'INR',
-    rate: 90.2,
-    status: 'Active',
-  },
-  {
-    base: 'GBP',
-    target: 'USD',
-    rate: 1.27,
-    status: 'Active',
-  },
-];
+import { logoutAdmin } from './api/authApi';
 
 const navigation = [
   { label: 'Dashboard', icon: LayoutDashboard },
@@ -121,20 +35,14 @@ function App() {
     Boolean(localStorage.getItem('adminToken'))
   );
 
-
   const handleLogin = () => {
     setIsAuthenticated(true);
   };
-
-
 
   const handleLogout = () => {
     logoutAdmin();
     setIsAuthenticated(false);
   };
-  // Exchange Rates search and filter state
-  const [searchCurrency, setSearchCurrency] = useState('');
-  const [rateStatus, setRateStatus] = useState('All');
 
   const pageContent = {
     Dashboard: {
@@ -160,22 +68,6 @@ function App() {
   };
 
   const currentPage = pageContent[activeMenu];
-
-  // Filter exchange rates by currency and status
-  const filteredRates = exchangeRates.filter((item) => {
-    const searchTerm = searchCurrency.trim().toLowerCase();
-
-    const matchesSearch =
-      item.base.toLowerCase().includes(searchTerm) ||
-      item.target.toLowerCase().includes(searchTerm);
-
-    const matchesStatus =
-      rateStatus === 'All' || item.status === rateStatus;
-
-    return matchesSearch && matchesStatus;
-  });
-
-
 
   if (!isAuthenticated) {
     return <LoginScreen onLogin={handleLogin} />;
@@ -263,7 +155,7 @@ function App() {
                 <strong>Administrator</strong>
                 <span>Admin</span>
               </div>
-
+ 
               <button
                 type="button"
                 className="logout-button"
@@ -281,10 +173,8 @@ function App() {
           {activeMenu === 'Dashboard' && <Dashboard />}
 
           {/* Users */}
-          {/* Users */}
           {activeMenu === 'Users' && <UserScreen />}
 
-          {/* Exchange Rates */}
           {/* Exchange Rates */}
           {activeMenu === 'Exchange Rates' && <ExchangeRates />}
 

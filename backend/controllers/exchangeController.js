@@ -1,7 +1,5 @@
 
 import { getExchangeRates } from '../services/exchangeRateService.js';
-import Conversion from '../models/Conversion.js';
-import authMiddleware from '../middleware/authMiddleware.js';
 
 export const convertCurrency = async (req, res) => {
   try {
